@@ -1,8 +1,7 @@
-"""
-URL configuration for ecommerce project.
+"""ecommerce URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
+    https://docs.djangoproject.com/en/3.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -16,8 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls.static import static
+from django.conf import settings
+
+
+admin.site.site_header = "ECOMMERCE"
+admin.site.site_title = "ARK ADMIN"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-      path('', include('store.urls')),
-]
+    path('',include('ecomapp.urls')),
+
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
