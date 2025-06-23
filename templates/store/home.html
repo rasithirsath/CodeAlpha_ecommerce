@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple E-Commerce Store</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 12px;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product {
+            background: #fff;
+            padding: 15px;
+            width: 220px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ✅ Navbar -->
+    <div class="navbar">
+  <a href="{% url 'home' %}">🏠 Home</a>
+
+  {% if user.is_authenticated %}
+    <span>Hello, {{ user.username }}</span>
+    <a href="{% url 'logout' %}">Logout</a>
+  {% else %}
+    <a href="{% url 'register' %}">Register</a>
+    <a href="{% url 'login' %}">Login</a>
+  {% endif %}
+  
+  <div class="cart-icon">
+    <a href="{% url 'view_cart' %}">🛒 Cart</a>
+    {% if cart_count > 0 %}
+      <span class="cart-count">{{ cart_count }}</span>
+    {% endif %}
+  </div>
+</div>
+
+    <h1 style="text-align:center;">Our Products</h1>
+    <div class="product-container">
+        {% for product in products %}
+        <div class="product">
+            <img src="{{ product.image }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p><b>${{ product.price }}</b></p>
+            <a href="{% url 'add_to_cart' product.id %}">
+                <button>Add to Cart</button>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
